@@ -1,0 +1,12 @@
+# Files generated during the compilation process
+*.cld
+*.class
+*.jar
+bin/
+
+# config files
+.classpath
+.progect
+.setting/
+.idea/
+.vscode
