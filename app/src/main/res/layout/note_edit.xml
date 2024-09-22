@@ -237,6 +237,170 @@
         </FrameLayout>
     </LinearLayout>
 
+<!--    Create font color selector -->
+    <LinearLayout
+        android:id="@+id/font_color_selector"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/font_size_selector_bg"
+        android:layout_gravity="bottom"
+        android:visibility="gone">
+        >
+
+        <FrameLayout
+            android:id="@+id/color_blue"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/edit_title_blue"
+                    android:layout_marginBottom="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/color_blue"
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_small_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:focusable="false"
+                android:visibility="gone"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/color_black"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/edit_title_white"
+                    android:layout_marginBottom="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/color_Black"
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_medium_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:focusable="false"
+                android:visibility="gone"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/color_yellow"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/edit_title_yellow"
+                    android:layout_marginBottom="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/color_yellow"
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_large_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:focusable="false"
+                android:visibility="gone"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/color_red"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/edit_title_red"
+                    android:layout_marginBottom="5dip" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/color_Red"
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_super_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:focusable="false"
+                android:visibility="gone"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/font_size_selector"
         android:layout_width="fill_parent"

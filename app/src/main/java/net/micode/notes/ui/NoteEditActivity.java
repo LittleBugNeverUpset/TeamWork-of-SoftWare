@@ -128,6 +128,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View mFontSizeSelector;
 
+    private View mFontColorSelector;
+
     private EditText mNoteEditor;
 
     private View mNoteEditorPanel;
@@ -416,6 +418,13 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             View view = findViewById(id);
             view.setOnClickListener(this);
         };
+
+//        初始化字体颜色选择器
+        mFontColorSelector = findViewById(R.id.font_size_selector);
+        for (int id : sFontSizeBtnsMap.keySet()) {
+            View view = findViewById(id);
+            view.setOnClickListener(this);
+        };
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mFontSizeId = mSharedPrefs.getInt(PREFERENCE_FONT_SIZE, ResourceParser.BG_DEFAULT_FONT_SIZE);
         /**
@@ -534,9 +543,11 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         } else {
             menu.findItem(R.id.menu_delete_remind).setVisible(false);
         }
-        menu.findItem(R.id.menu_font_color);
+        MenuItem fontColorItem = menu.findItem(R.id.menu_font_color);
+        if (fontColorItem != null) {
+            fontColorItem.setVisible(true);
+        }
         return true;
-
     }
 
     @Override
@@ -561,6 +572,10 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 builder.show();
                 break;
             case R.id.menu_font_size:
+                mFontSizeSelector.setVisibility(View.VISIBLE);
+                findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
+                break;
+            case R.id.menu_font_color:
                 mFontSizeSelector.setVisibility(View.VISIBLE);
                 findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
                 break;
