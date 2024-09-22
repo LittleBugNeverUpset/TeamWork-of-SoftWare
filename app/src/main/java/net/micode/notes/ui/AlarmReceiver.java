@@ -20,11 +20,26 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * AlarmReceiver 是一个广播接收器类，用于接收闹钟提醒的广播，并启动相应的提醒活动。
+ */
 public class AlarmReceiver extends BroadcastReceiver {
+    /**
+     * 当广播接收器接收到闹钟广播时调用的方法。
+     * 它将会启动提醒界面（AlarmAlertActivity），让用户看到提醒内容。
+     *
+     * @param context 上下文，用于启动新活动。
+     * @param intent 广播意图，包含相关的闹钟提醒信息。
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
+        // 将收到的 Intent 的目标类设置为 AlarmAlertActivity，即提醒界面
         intent.setClass(context, AlarmAlertActivity.class);
+
+        // 添加 FLAG_ACTIVITY_NEW_TASK 标志，表示新启动的活动将作为一个新的任务来执行
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // 启动 AlarmAlertActivity 来显示提醒
         context.startActivity(intent);
     }
 }

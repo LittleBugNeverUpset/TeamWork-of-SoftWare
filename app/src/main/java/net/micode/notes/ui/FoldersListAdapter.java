@@ -28,53 +28,101 @@ import net.micode.notes.R;
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.NoteColumns;
 
-
+/**
+ * FoldersListAdapter类用于适配文件夹列表数据。
+ * 继承自CursorAdapter，以便于处理数据库游标数据。
+ */
 public class FoldersListAdapter extends CursorAdapter {
-    public static final String [] PROJECTION = {
-        NoteColumns.ID,
-        NoteColumns.SNIPPET
+    // 查询的字段数组
+    public static final String[] PROJECTION = {
+            NoteColumns.ID,
+            NoteColumns.SNIPPET
     };
 
-    public static final int ID_COLUMN   = 0;
+    // 列索引
+    public static final int ID_COLUMN = 0;
     public static final int NAME_COLUMN = 1;
 
+    /**
+     * 构造函数，初始化适配器。
+     *
+     * @param context - 上下文
+     * @param c - 数据库游标
+     */
     public FoldersListAdapter(Context context, Cursor c) {
         super(context, c);
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * 创建新的视图，用于展示每个文件夹项。
+     *
+     * @param context - 上下文
+     * @param cursor - 数据游标
+     * @param parent - 父视图组
+     * @return 新创建的视图
+     */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return new FolderListItem(context);
     }
 
+    /**
+     * 绑定数据到视图。
+     *
+     * @param view - 要绑定的视图
+     * @param context - 上下文
+     * @param cursor - 数据游标
+     */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         if (view instanceof FolderListItem) {
+            // 获取文件夹名称，判断是否为根文件夹
             String folderName = (cursor.getLong(ID_COLUMN) == Notes.ID_ROOT_FOLDER) ? context
                     .getString(R.string.menu_move_parent_folder) : cursor.getString(NAME_COLUMN);
             ((FolderListItem) view).bind(folderName);
         }
     }
 
+    /**
+     * 根据位置获取文件夹名称。
+     *
+     * @param context - 上下文
+     * @param position - 位置
+     * @return 文件夹名称
+     */
     public String getFolderName(Context context, int position) {
         Cursor cursor = (Cursor) getItem(position);
         return (cursor.getLong(ID_COLUMN) == Notes.ID_ROOT_FOLDER) ? context
                 .getString(R.string.menu_move_parent_folder) : cursor.getString(NAME_COLUMN);
     }
 
+    /**
+     * 内部类，用于表示每个文件夹的列表项视图。
+     */
     private class FolderListItem extends LinearLayout {
-        private TextView mName;
+        private TextView mName; // 文件夹名称文本视图
 
+        /**
+         * 构造函数，初始化文件夹列表项视图。
+         *
+         * @param context - 上下文
+         */
         public FolderListItem(Context context) {
             super(context);
+            // 加载布局文件
             inflate(context, R.layout.folder_list_item, this);
+            // 获取文件夹名称文本视图
             mName = (TextView) findViewById(R.id.tv_folder_name);
         }
 
+        /**
+         * 绑定文件夹名称到视图。
+         *
+         * @param name - 文件夹名称
+         */
         public void bind(String name) {
             mName.setText(name);
         }
     }
-
 }
