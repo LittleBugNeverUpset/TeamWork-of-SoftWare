@@ -1,6 +1,6 @@
 # config files list
 
-/gradle
+gradle/
 build.gradle.kts
 proguard-rules.pro
 gradle.properties
@@ -10,6 +10,8 @@ local.properties
 gradle-wrapper.properties
 *.toml
 setting.gradle.kts
+.gradle/
+.idea/
 
 /local.properties
 /.idea/caches

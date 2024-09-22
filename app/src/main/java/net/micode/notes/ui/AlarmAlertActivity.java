@@ -82,7 +82,6 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
             e.printStackTrace();
             return;
         }
-
         mPlayer = new MediaPlayer(); // 初始化 MediaPlayer
         // 检查当前笔记是否在数据库中可见
         if (DataUtils.visibleInNoteDatabase(getContentResolver(), mNoteId, Notes.TYPE_NOTE)) {

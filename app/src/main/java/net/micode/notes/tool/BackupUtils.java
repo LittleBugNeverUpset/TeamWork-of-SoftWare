@@ -289,24 +289,27 @@ public class BackupUtils {
             File file = generateFileMountedOnSDcard(mContext, R.string.file_path,
                     R.string.file_name_txt_format);
             if (file == null) {
-                Log.e(TAG, "create file to exported failed");
+                Log.e(TAG, "Failed to create file for export. File path: " + mContext.getString(R.string.file_path));
                 return null;
             }
             mFileName = file.getName();
             mFileDirectory = mContext.getString(R.string.file_path);
-            PrintStream ps = null;
-            try {
-                FileOutputStream fos = new FileOutputStream(file);
-                ps = new PrintStream(fos);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            } catch (NullPointerException e) {
-                e.printStackTrace();
+
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 PrintStream ps = new PrintStream(fos)) {
+                return ps;
+            } catch (IOException | NullPointerException e) {
+                Log.e(TAG, "Error while creating PrintStream: " + e.getMessage(), e);
                 return null;
             }
-            return ps;
         }
+        /*
+        *检查文件路径和权限问题，特别是在 Android 设备上涉及存储时的特殊处理。
+        * 扩展异常处理，增加对可能的 IOException 的捕获
+        * 使用 try-with-resources 来自动关闭流，避免资源泄漏问题。
+        * 提供更详细的错误日志信息，便于调试。
+        * */
+
     }
 
     /**
