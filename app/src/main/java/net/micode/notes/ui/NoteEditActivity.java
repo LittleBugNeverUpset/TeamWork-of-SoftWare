@@ -161,6 +161,38 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         initResources();
     }
 
+//    private final int PHOTO_REQUEST=1;
+//
+//    @Override
+//
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        this.setContentView(R.layout.note_edit);
+//
+//        if (savedInstanceState == null && !initActivityState(getIntent())) {
+//            finish();
+//            return;
+//        }
+//        initResources();
+//
+//        //根据id获取添加图片按钮
+//        final ImageButton add_img_btn = (ImageButton) findViewById(R.id.add_img_btn);
+//        //为点击图片按钮设置监听器
+//        add_img_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d(TAG, "onClick: click add image button");
+//                //ACTION_GET_CONTENT: 允许用户选择特殊种类的数据，并返回（特殊种类的数据：照一张相片或录一段音）
+//                Intent loadImage = new Intent(Intent.ACTION_GET_CONTENT);
+//                //Category属性用于指定当前动作（Action）被执行的环境.
+//                //CATEGORY_OPENABLE; 用来指示一个ACTION_GET_CONTENT的intent
+//                loadImage.addCategory(Intent.CATEGORY_OPENABLE);
+//                loadImage.setType("image/*");
+//                startActivityForResult(loadImage, PHOTO_REQUEST);
+//            }
+//        });
+//    }
+
     /**
      * Current activity may be killed when the memory is low. Once it is killed, for another time
      * user load this activity, we should restore the former state
@@ -502,7 +534,9 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         } else {
             menu.findItem(R.id.menu_delete_remind).setVisible(false);
         }
+        menu.findItem(R.id.menu_font_color);
         return true;
+
     }
 
     @Override
@@ -870,4 +904,5 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private void showToast(int resId, int duration) {
         Toast.makeText(this, resId, duration).show();
     }
+
 }
