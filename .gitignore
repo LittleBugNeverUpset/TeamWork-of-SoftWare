@@ -9,10 +9,10 @@ gradlew.bat
 local.properties
 gradle-wrapper.properties
 *.toml
-setting.gradle.kts
+settings.gradle.kts
 .gradle/
 .idea/
-
+httpcomponents-client-4.5.14-bin/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -26,3 +26,5 @@ setting.gradle.kts
 .externalNativeBuild
 .cxx
 local.properties
+app/build/
+
