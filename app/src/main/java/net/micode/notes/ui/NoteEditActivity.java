@@ -131,8 +131,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View mFontSizeSelector;
 
-    private View mFontColorSelector;
-
     private EditText mNoteEditor;
 
     private View mNoteEditorPanel;
@@ -165,38 +163,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         }
         initResources();
     }
-
-//    private final int PHOTO_REQUEST=1;
-//
-//    @Override
-//
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        this.setContentView(R.layout.note_edit);
-//
-//        if (savedInstanceState == null && !initActivityState(getIntent())) {
-//            finish();
-//            return;
-//        }
-//        initResources();
-//
-//        //根据id获取添加图片按钮
-//        final ImageButton add_img_btn = (ImageButton) findViewById(R.id.add_img_btn);
-//        //为点击图片按钮设置监听器
-//        add_img_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(TAG, "onClick: click add image button");
-//                //ACTION_GET_CONTENT: 允许用户选择特殊种类的数据，并返回（特殊种类的数据：照一张相片或录一段音）
-//                Intent loadImage = new Intent(Intent.ACTION_GET_CONTENT);
-//                //Category属性用于指定当前动作（Action）被执行的环境.
-//                //CATEGORY_OPENABLE; 用来指示一个ACTION_GET_CONTENT的intent
-//                loadImage.addCategory(Intent.CATEGORY_OPENABLE);
-//                loadImage.setType("image/*");
-//                startActivityForResult(loadImage, PHOTO_REQUEST);
-//            }
-//        });
-//    }
 
     /**
      * Current activity may be killed when the memory is low. Once it is killed, for another time
@@ -421,13 +387,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             View view = findViewById(id);
             view.setOnClickListener(this);
         };
-
-//        初始化字体颜色选择器
-        mFontColorSelector = findViewById(R.id.font_size_selector);
-        for (int id : sFontSizeBtnsMap.keySet()) {
-            View view = findViewById(id);
-            view.setOnClickListener(this);
-        };
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mFontSizeId = mSharedPrefs.getInt(PREFERENCE_FONT_SIZE, ResourceParser.BG_DEFAULT_FONT_SIZE);
         /**
@@ -546,10 +505,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         } else {
             menu.findItem(R.id.menu_delete_remind).setVisible(false);
         }
-        MenuItem fontColorItem = menu.findItem(R.id.menu_font_color);
-        if (fontColorItem != null) {
-            fontColorItem.setVisible(true);
-        }
         return true;
     }
 
@@ -575,10 +530,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 builder.show();
                 break;
             case R.id.menu_font_size:
-                mFontSizeSelector.setVisibility(View.VISIBLE);
-                findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
-                break;
-            case R.id.menu_font_color:
                 mFontSizeSelector.setVisibility(View.VISIBLE);
                 findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
                 break;
@@ -709,6 +660,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 }
                 break;
             }
+
+
 
 
 
@@ -1035,5 +988,4 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private void showToast(int resId, int duration) {
         Toast.makeText(this, resId, duration).show();
     }
-
 }

@@ -50,10 +50,14 @@
         android:id="@+id/menu_delete_remind"
         android:title="@string/menu_remove_remind" />
 
+<<<<<<< HEAD
     <item
         android:id="@+id/join_password"
         android:title="@string/join_password"/>
     <item
         android:id="@+id/out_password"
         android:title="@string/out_password"/>
+=======
+
+>>>>>>> YiLi
 </menu>

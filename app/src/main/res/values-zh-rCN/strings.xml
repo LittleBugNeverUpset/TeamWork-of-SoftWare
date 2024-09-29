@@ -63,7 +63,6 @@
     <string name="menu_send_to_desktop">发送到桌面</string>
     <string name="menu_alert">提醒我</string>
     <string name="menu_remove_remind">删除提醒</string>
-    <string name="menu_font_color">选择字体颜色</string>
     <string name="menu_title_select_folder">选择文件夹</string>
     <string name="menu_move_parent_folder">上一级文件夹</string>
     <string name="info_note_enter_desktop">已添加到桌面</string>
@@ -120,10 +119,6 @@
     <string name="search">便签</string>
     <string name="datetime_dialog_ok">设置</string>
     <string name="datetime_dialog_cancel">取消</string>
-    <string name="color_blue">蓝色</string>
-    <string name="color_yellow">黄色</string>
-    <string name="color_Red">红色</string>
-    <string name="color_Black">黑色</string>
     <plurals name="search_results_title">
         <item quantity="other"><xliff:g id="NUMBER">%1$s</xliff:g> 条符合“<xliff:g id="SEARCH">%2$s</xliff:g>”的搜索结果</item>
     </plurals>

@@ -37,8 +37,16 @@
         android:id="@+id/menu_search"
         android:title="@string/menu_search"/>
 
+<<<<<<< HEAD
     <!--设置笔记锁密码:-->
     <item
         android:id="@+id/set_password"
         android:title="@string/set_password" />
+=======
+
+    <item
+        android:id="@+id/menu_secret"
+        android:title="@string/menu_secret" />
+
+>>>>>>> YiLi
 </menu>
