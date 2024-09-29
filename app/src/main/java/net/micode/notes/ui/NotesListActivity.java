@@ -78,6 +78,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.Charset;
+
 public class NotesListActivity extends Activity implements OnClickListener, OnItemLongClickListener {
     private static final int FOLDER_NOTE_LIST_QUERY_TOKEN = 0;
 
@@ -534,10 +538,65 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     private void openNode(NoteItemData data) {
-        Intent intent = new Intent(this, NoteEditActivity.class);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.putExtra(Intent.EXTRA_UID, data.getId());
-        this.startActivityForResult(intent, REQUEST_CODE_OPEN_NODE);
+        // 获取SharedPreferences对象
+        SharedPreferences sharedPreferences = getSharedPreferences("NoteLock", MODE_PRIVATE);
+        if (!sharedPreferences.getBoolean("isLocked", false)) {
+            // 如果便签未被锁定，直接进入下一个界面
+            Intent intent = new Intent(NotesListActivity.this, NoteEditActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.putExtra(Intent.EXTRA_UID, data.getId());
+            NotesListActivity.this.startActivityForResult(intent, REQUEST_CODE_OPEN_NODE);
+        }
+        else {
+            // 如果便签被锁定，要求输入密码然后进入
+            // 获取 SharedPreferences 中保存的密码
+            SharedPreferences prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
+            final String savedPassword = prefs.getString("password", "");
+            if (!savedPassword.isEmpty()) {
+                // 如果密码存在，弹出一个对话框让用户输入密码
+                AlertDialog.Builder passwordDialog = new AlertDialog.Builder(NotesListActivity.this);
+                passwordDialog.setTitle("输入密码");
+                final EditText input = new EditText(NotesListActivity.this);
+                passwordDialog.setView(input);
+                passwordDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String enteredPassword = input.getText().toString();
+                        try {
+                            // 创建 MessageDigest 实例
+                            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                            // 生成哈希值
+                            byte[] hash = digest.digest(enteredPassword.getBytes(Charset.forName("UTF-8")));
+                            // 将字节转换为十六进制字符串
+                            StringBuilder hexString = new StringBuilder();
+                            for (byte b : hash) {
+                                String hex = Integer.toHexString(0xff & b);
+                                if (hex.length() == 1) hexString.append('0');
+                                hexString.append(hex);
+                            }
+                            // 获取输入密码的哈希值
+                            String enteredHashedPassword = hexString.toString();
+                            // 比较输入密码的哈希值与保存的哈希密码是否相同
+                            if (enteredHashedPassword.equals(savedPassword)) {
+                                // 如果密码正确，解锁便签并打开
+                                Intent intent = new Intent(NotesListActivity.this, NoteEditActivity.class);
+                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.putExtra(Intent.EXTRA_UID, data.getId());
+                                NotesListActivity.this.startActivityForResult(intent, REQUEST_CODE_OPEN_NODE);
+                            } else {
+                                // 如果密码错误，弹出提示信息
+                                Toast.makeText(NotesListActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                passwordDialog.setNegativeButton("取消", null);
+                passwordDialog.show();
+            }
+        }
+
     }
 
     private void openFolder(NoteItemData data) {
@@ -812,6 +871,66 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             case R.id.menu_search:
                 onSearchRequested();
                 break;
+
+            case R.id.set_password: {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(NotesListActivity.this);
+                dialog.setTitle("重要提醒");
+                dialog.setMessage("您确认设置便签锁密码吗？");
+                dialog.setCancelable(false);
+                dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder passwordDialog = new AlertDialog.Builder(NotesListActivity.this);
+                        passwordDialog.setTitle("输入密码");
+                        final EditText input = new EditText(NotesListActivity.this);
+                        passwordDialog.setView(input);
+                        passwordDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String password = input.getText().toString();
+                                try {
+                                    // 创建 MessageDigest 实例
+                                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                                    // 生成哈希值
+                                    byte[] hash = digest.digest(password.getBytes(Charset.forName("UTF-8")));
+                                    // 将字节转换为十六进制字符串
+                                    StringBuilder hexString = new StringBuilder();
+                                    for (byte b : hash) {
+                                        String hex = Integer.toHexString(0xff & b);
+                                        if (hex.length() == 1) hexString.append('0');
+                                        hexString.append(hex);
+                                    }
+                                    // 保存哈希值
+                                    String hashedPassword = hexString.toString();
+                                    // 使用 SharedPreferences 保存哈希密码
+                                    SharedPreferences prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("password", hashedPassword);
+                                    editor.apply();
+                                    // 显示 Toast 消息
+                                    Toast.makeText(NotesListActivity.this, "密码保存成功", Toast.LENGTH_SHORT).show();
+                                } catch (NoSuchAlgorithmException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        passwordDialog.setNegativeButton("取消", null);
+                        passwordDialog.show();
+                    }
+                });
+                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+                dialog.show();
+                startAsyncNotesListQuery();
+                break;
+            }
+
+
+
+
+
             default:
                 break;
         }

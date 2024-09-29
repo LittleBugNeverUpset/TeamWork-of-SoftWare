@@ -68,6 +68,10 @@
     <string name="menu_alert">Remind me</string>
     <string name="menu_font_color">Select Font Color</string>
     <string name="menu_remove_remind">Delete reminder</string>
+
+    <string name="join_password" translatable="false">加入便签锁</string>
+    <string name="out_password" translatable="false">删除便签锁</string>
+
     <string name="menu_title_select_folder">Select folder</string>
     <string name="menu_move_parent_folder">Parent folder</string>
     <string name="info_note_enter_desktop">Note added to home</string>
@@ -127,10 +131,16 @@
     <string name="search">Notes</string>
     <string name="datetime_dialog_ok">set</string>
     <string name="datetime_dialog_cancel">cancel</string>
+<<<<<<< HEAD
     <string name="color_blue">Blue</string>
     <string name="color_yellow">Yellow</string>
     <string name="color_Red">Red</string>
     <string name="color_Black">Black</string>
+=======
+
+    <string name="set_password" translatable="false">设置便签锁密码</string>
+
+>>>>>>> YangZhan
     <plurals name="search_results_title">
          <item quantity="one"><xliff:g id="number" example="1">%1$s</xliff:g> result for \"<xliff:g id="search" example="???">%2$s</xliff:g>\"</item>
         <!-- Case of 0 or 2 or more results. -->

@@ -36,4 +36,9 @@
     <item
         android:id="@+id/menu_search"
         android:title="@string/menu_search"/>
+
+    <!--设置笔记锁密码:-->
+    <item
+        android:id="@+id/set_password"
+        android:title="@string/set_password" />
 </menu>

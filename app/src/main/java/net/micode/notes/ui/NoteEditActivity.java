@@ -71,6 +71,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class NoteEditActivity extends Activity implements OnClickListener,
         NoteSettingChangedListener, OnTextViewChangeListener {
@@ -596,6 +599,119 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case R.id.menu_delete_remind:
                 mWorkingNote.setAlertDate(0, false);
                 break;
+
+            case R.id.join_password: {
+                // 获取SharedPreferences对象
+                SharedPreferences sharedPreferences = getSharedPreferences("NoteLock", MODE_PRIVATE);
+                // 检查便签是否未被锁定
+                if (sharedPreferences.getBoolean("isLocked", false)) {
+                    // 如果便签未被锁定，弹出提示信息
+                    Toast.makeText(NoteEditActivity.this, "该便签被锁定", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 如果便签没有被锁定，弹出确认对话框
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setTitle("重要提醒");
+                    dialog.setMessage("您确认将此便签加入便签锁吗？");
+                    dialog.setCancelable(false);
+                    dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 获取 SharedPreferences 中保存的密码
+                            SharedPreferences prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
+                            final String savedPassword = prefs.getString("password", "");
+                            if (!savedPassword.isEmpty()) {
+                                // 如果密码存在，弹出一个对话框让用户输入密码
+                                AlertDialog.Builder passwordDialog = new AlertDialog.Builder(NoteEditActivity.this);
+                                passwordDialog.setTitle("输入密码");
+                                final EditText input = new EditText(NoteEditActivity.this);
+                                passwordDialog.setView(input);
+                                passwordDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String enteredPassword = input.getText().toString();
+                                        try {
+                                            // 创建 MessageDigest 实例
+                                            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                                            // 生成哈希值
+                                            byte[] hash = digest.digest(enteredPassword.getBytes(Charset.forName("UTF-8")));
+                                            // 将字节转换为十六进制字符串
+                                            StringBuilder hexString = new StringBuilder();
+                                            for (byte b : hash) {
+                                                String hex = Integer.toHexString(0xff & b);
+                                                if (hex.length() == 1) hexString.append('0');
+                                                hexString.append(hex);
+                                            }
+                                            // 获取输入密码的哈希值
+                                            String enteredHashedPassword = hexString.toString();
+                                            // 比较输入密码的哈希值与保存的哈希密码是否相同
+                                            if (enteredHashedPassword.equals(savedPassword)) {
+                                                // 如果密码正确，设置便签被锁定
+                                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                editor.putBoolean("isLocked", true);
+                                                editor.apply();
+                                                // 弹出提示信息
+                                                Toast.makeText(NoteEditActivity.this, "便签锁已添加", Toast.LENGTH_SHORT).show();
+                                                // 显示便签内容
+                                                // 这里需要你自己实现显示便签内容的逻辑
+                                            } else {
+                                                // 如果密码错误，提示用户
+                                                Toast.makeText(NoteEditActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (NoSuchAlgorithmException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                passwordDialog.setNegativeButton("取消", null);
+                                passwordDialog.show();
+                            } else {
+                                // 如果密码不存在，直接显示便签内容
+                                // 这里需要你自己实现显示便签内容的逻辑
+                            }
+                        }
+                    });
+                    dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    });
+                    dialog.show();
+                }
+                break;
+            }
+            case R.id.out_password:{
+                // 获取SharedPreferences对象
+                SharedPreferences sharedPreferences = getSharedPreferences("NoteLock", MODE_PRIVATE);
+                // 检查便签是否未被锁定
+                if (!sharedPreferences.getBoolean("isLocked", false)) {
+                    // 如果便签未被锁定，弹出提示信息
+                    Toast.makeText(NoteEditActivity.this, "该便签未被锁定", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 如果便签被锁定，弹出确认对话框
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setTitle("重要提醒");
+                    dialog.setMessage("您确认将此便签删除便签锁吗？");
+                    dialog.setCancelable(false);
+                    dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 删除便签锁
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("isLocked", false);
+                            editor.apply();
+                            // 弹出提示信息
+                            Toast.makeText(NoteEditActivity.this, "便签锁已删除", Toast.LENGTH_SHORT).show();
+                            // 显示便签内容
+                            // 这里需要你自己实现显示便签内容的逻辑
+                        }
+                    });
+                    dialog.setNegativeButton("取消", null);
+                    dialog.show();
+                }
+                break;
+            }
+
+
+
             default:
                 break;
         }
