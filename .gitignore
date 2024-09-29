@@ -12,6 +12,9 @@ gradle-wrapper.properties
 settings.gradle.kts
 .gradle/
 .idea/
+./app/src/androidTest/
+.app/src/test/
+
 httpcomponents-client-4.5.14-bin/
 /local.properties
 /.idea/caches

@@ -51,6 +51,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
+import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.app.AlertDialog;
+import android.view.MenuItem;
+import android.content.DialogInterface;
+import android.graphics.Color;
 
 import net.micode.notes.R;
 import net.micode.notes.data.Notes;
@@ -130,6 +137,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private View mNoteBgColorSelector;
 
     private View mFontSizeSelector;
+
+    private  TextView  mNoteTextView;
 
     private EditText mNoteEditor;
 
@@ -508,6 +517,41 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         return true;
     }
 
+
+//    更改颜色
+
+    private void showColorPickerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("选择字体颜色");
+
+        final String[] colors = {"红色", "绿色", "蓝色", "黑色", "黄色"};
+        final int[] colorValues = {Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW};
+
+        builder.setItems(colors, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int selectedColor = colorValues[which];
+                applyTextColor(selectedColor);
+            }
+        });
+        builder.show();
+    }
+
+    private void applyTextColor(int color) {
+        if (mNoteTextView != null) {
+            mNoteTextView.setTextColor(color);
+        }
+        saveTextColor(color);
+    }
+
+    private void saveTextColor(int color) {
+        SharedPreferences sharedPreferences = getSharedPreferences("NotePreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("textColor", color);
+        editor.apply();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -550,6 +594,10 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case R.id.menu_delete_remind:
                 mWorkingNote.setAlertDate(0, false);
                 break;
+            case R.id.menu_font_color:
+                showColorPickerDialog();;
+                break;
+
 
             case R.id.join_password: {
                 // 获取SharedPreferences对象

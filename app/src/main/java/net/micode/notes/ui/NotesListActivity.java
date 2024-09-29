@@ -875,7 +875,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 onSearchRequested();
                 break;
 
-<<<<<<< HEAD
+
             case R.id.set_password: {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(NotesListActivity.this);
                 dialog.setTitle("重要提醒");
@@ -935,7 +935,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
 
 
-=======
+
 
 
 
@@ -987,7 +987,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 break;
             }
 
->>>>>>> YiLi
+
             default:
                 break;
         }
