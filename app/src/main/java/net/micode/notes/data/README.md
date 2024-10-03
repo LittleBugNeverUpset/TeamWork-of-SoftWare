@@ -112,9 +112,12 @@ MIMETYPE变量是DataColumnsWithJoins的父类
 其余三个**Blocker**均为相同原因。
 
 
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/Contact_Problem02.png)
+
 
 #### 问题：**Utility classes should not have public constructors。(创建工具类或者常量类要创建私有化构造方法)**
+
+![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/Contact_Problem02.png)
+
 我们在新建工具类或者新建某个常量Const类，要创建一个私有的构造方法。因为我们不创带参构造的情况下，Java类会默认生成一个无参构造方法，但是一般工具类或者常量类是不允许通过new来实例化对象的，都是通过声明一个个静态方法或者变量，通过类名+ (.)点+ 方法来调用，所以注意像下图案例一样，要创建一个私有化的构造方法，覆盖掉原有的无参构造，让该类无法创建实例
 
 ![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/Contact_Problem02_complete.png)
@@ -207,19 +210,156 @@ MIMETYPE变量是DataColumnsWithJoins的父类
 由此可见这段代码贯穿了整个app的各个部分，想要进行修改十分困难（**以此为鉴以此为鉴！！！**）
 另外一个爆红问题与此相同。
 
+#### 2024/10/03修改
+![](../../../../../../README_IMAGE/data_Problems/Notes_Problems/Notes_Problem02_complete.png)
+根据资料查阅得知在 Java 8 中，接口引入了 default 方法，允许你为接口中的某些方法提供默认实现。如果一个类实现了这个接口，并且不重写 default 方法，它将使用接口中的默认实现。
 
-#### 问题：**Utility classes should not have public constructors。(创建工具类或者常量类要创建私有化构造方法)**
 
-![](../../../../../../README_IMAGE/data_Problems/Notes_Problems/Notes_Problem03.png)
+#### 问题 :**Utility classes should not have public constructors。(创建工具类或者常量类要创建私有化构造方法)**
 
 同Contact.java模块中第二个问题，这三个**Critical**只需要增加private的无参构造函数即可解决。
+
+![](../../../../../../README_IMAGE/data_Problems/Notes_Problems/Notes_Problem03.png)
+**爆红消失**，仅剩下命名不规范的提示。
+
 
 ![](../../../../../../README_IMAGE/data_Problems/Notes_Problems/Notes_Problem03_Complete.png)
 
 ## NotesDataBasesHelper.java类源码分析
->TODO
+###  **类结构**
+
+`NotesDatabaseHelper` 继承自 `SQLiteOpenHelper`，是一个帮助管理 SQLite 数据库的工具类，专门用于创建、升级、和维护 "note.db" 数据库。其结构如下：
+
+- **类名**: `NotesDatabaseHelper`
+- **成员变量**:
+  - `DB_NAME`: 数据库名，常量，值为 `"note.db"`。
+  - `DB_VERSION`: 数据库版本号，常量，值为 `4`。
+  - `TABLE`: 定义了包含笔记和数据的表名的接口。
+  - `mInstance`: 数据库实例，用于单例模式。
+  - 多条 SQL 语句，用于创建表、索引和触发器。
+  
+- **构造方法**:
+  - 私有构造函数 `NotesDatabaseHelper(Context context)`，通过调用父类构造器来初始化数据库。
+  
+- **静态方法**:
+  - `getInstance(Context context)`: 获取单例的 `NotesDatabaseHelper` 实例，确保只存在一个数据库帮助类的实例。
+
+- **覆写的方法**:
+  - `onCreate(SQLiteDatabase db)`: 创建数据库并执行创建表、索引和触发器的 SQL 语句。
+  - `onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)`: 在数据库版本升级时执行的代码。
+  - `execSQL(String sql)`: 用于执行外部 SQL 语句的方法，供调试使用。
+
+###  **对外提供的方法**
+
+- **`getInstance(Context context)`**: 提供了一个全局获取 `NotesDatabaseHelper` 的实例的途径，使用了单例模式来确保只有一个数据库实例。
+  
+- **`onCreate(SQLiteDatabase db)`**: 在数据库创建时调用，主要负责表和触发器的创建。用户不需要直接调用此方法，SQLiteOpenHelper 会自动调用它。
+
+- **`onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)`**: 在数据库版本升级时调用，用于执行与数据库版本相关的 SQL 更新操作。用户也不直接调用此方法。
+
+- **`execSQL(String sql)`**: 直接提供了执行自定义 SQL 的接口，便于在调试或动态场景中调用数据库查询。
+
+###  **实现的功能**
+
+- **表的创建**: 通过 `onCreate` 方法执行了 SQL 语句，创建了笔记表 `note` 和数据表 `data`，并为数据表 `data` 创建了索引。
+
+- **触发器的管理**: 该类定义了多条触发器，用于在更新、插入、删除数据时自动更新表的数据或执行相关操作。例如，`increase_folder_count_on_insert` 触发器会在插入新笔记时自动增加文件夹的笔记数量。
+
+- **数据库升级**: 通过 `onUpgrade` 方法管理数据库版本升级时的表结构更新。在 `DB_VERSION` 为 4 时，增加了为 `data` 表的 `NOTE_ID` 创建索引。
+
+- **单例模式**: 使用单例模式确保应用中所有操作都使用同一个 `NotesDatabaseHelper` 实例，避免多次创建数据库连接。
+
+###  **使用SonarLint进行代码质量检测**:
+
+#### 问题：**Interfaces should not solely consist of constants。接口不应仅由常量组成**
+![](../../../../../../README_IMAGE/data_Problems/NotesDatabaseHelper_Problems/Problem_1.png)
+
+根据资料查阅得知在 Java 8 中，接口引入了 default 方法，允许你为接口中的某些方法提供默认实现。如果一个类实现了这个接口，并且不重写 default 方法，它将使用接口中的默认实现。
+
+``` java
+ public interface TABLE {
+
+        default String getNote(){
+            return NOTE;
+        }
+        // 笔记表名称
+        public static final String NOTE = "note";
+        // 数据表名称
+        public static final String DATA = "data";
+    }
+```
+![](../../../../../../README_IMAGE/data_Problems/NotesDatabaseHelper_Problems/Problem_1_complete.png)
+爆红消失
+
+#### **String literals should not be duplicated。字符串重复使用**
+![](../../../../../../README_IMAGE/data_Problems/NotesDatabaseHelper_Problems/Problem_2.png)
+以下爆红均添加变量替代重复使用的字符串即可。
+
+#### **Unnecessary imports should be removed，移除不必要的引入**
+![](../../../../../../README_IMAGE/data_Problems/NotesDatabaseHelper_Problems/Problem_3.png)
+
+`import android.content.ContentValues;`在整段程序中没有使用，引入会降低程序效率，删掉这一行代码。
 
 ## NotesProvider.java类源码分析
-> TODO
+
+###  **类结构分析：**
+
+- **类名**: `NotesProvider`
+  - 继承自 `ContentProvider`，是 Android 中提供跨应用访问数据的组件，用于对 `SQLite` 数据库进行增删改查操作。
+  
+- **成员变量**:
+  - `mMatcher`：`UriMatcher` 对象，用于匹配 URI 与具体操作的映射关系。
+  - `mHelper`：`NotesDatabaseHelper` 对象，用于获取数据库的实例，负责数据库的读写操作。
+  - **常量**：定义了与 `UriMatcher` 相对应的 URI 类型（如 `URI_NOTE`, `URI_NOTE_ITEM` 等），用于区分操作类型。
+  - `NOTES_SEARCH_PROJECTION` 和 `NOTES_SNIPPET_SEARCH_QUERY`：为搜索功能准备的查询和投影语句，用于处理特定搜索需求。
+  
+- **静态代码块**：
+  - 使用 `UriMatcher` 添加 URI 规则，将不同路径的 URI 映射到不同的操作。
+
+---
+
+###  **对外提供的方法：**
+
+- **`onCreate()`**:
+  - 在 `ContentProvider` 被创建时调用，初始化数据库帮助类 `mHelper`。
+
+- **`query()`**:
+  - 实现数据库的查询操作，根据传入的 URI 匹配相应的数据表。
+  - 通过 `mMatcher.match(uri)` 匹配 URI，对应不同的表（如 `NOTE`, `DATA`）和搜索需求。
+  - 处理了常规的查询操作以及搜索建议功能，返回 `Cursor` 供外部使用。
+
+- **`insert()`**:
+  - 实现数据库的插入操作，支持对 `NOTE` 和 `DATA` 表的插入，并返回新插入的 URI。
+  - 插入成功后，会通知 `ContentResolver`，触发监听数据变化的 UI 更新。
+
+- **`delete()`**:
+  - 实现数据库的删除操作，支持对 `NOTE` 和 `DATA` 表的数据进行删除。
+  - 删除成功后，会触发相应的数据变化通知。
+
+- **`update()`**:
+  - 实现数据库的更新操作，支持对 `NOTE` 和 `DATA` 表的数据进行更新。
+  - 更新成功后，通知 `ContentResolver` 更新数据。
+
+- **`getType()`**:
+  - 返回 MIME 类型。这个方法目前没有实现（返回 `null`），可以根据 URI 返回对应的数据类型。
+
+---
+
+###  **实现的功能：**
+
+- **基本的数据库操作**：
+  - 提供了 `query`, `insert`, `delete`, `update` 操作，分别实现了数据库的增删改查功能，能够操作 `NOTE` 和 `DATA` 两个表的数据。
+  
+- **数据搜索功能**：
+  - 支持通过特定路径 `URI_SEARCH` 和 `URI_SEARCH_SUGGEST` 来进行内容搜索。
+  - 使用 SQL 语句对 `NoteColumns.SNIPPET` 字段进行模糊查询，并返回搜索建议的结果，便于实现搜索提示功能。
+
+- **版本控制**：
+  - `increaseNoteVersion()` 方法用于在更新数据时，增加 `NOTE` 表中笔记的版本号。这是一个额外的功能，确保每次修改笔记都会记录版本变更。
+
+---
+
+###  **使用SonarLint进行代码质量检测**:
+
 
 [返回源码分析报告页面](../../../../../../../README.md)

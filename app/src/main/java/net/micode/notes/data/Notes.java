@@ -75,7 +75,9 @@ public class Notes {
 
     // NoteColumns接口定义了与笔记相关的数据库表字段
     public interface NoteColumns {
-
+        default String getID(){
+            return ID;
+        }
 
         public static final String ID = "_id";
 
@@ -114,6 +116,9 @@ public class Notes {
 
     // DataColumns接口定义了与数据相关的数据库表字段
     public interface DataColumns {
+        default String getID(){
+            return ID;
+        }
         /**
          * 行的唯一ID
          * <P> 类型: INTEGER (long) </P>
