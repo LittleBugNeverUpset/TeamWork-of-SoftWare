@@ -189,12 +189,12 @@ public class WorkingNote {
 
     public synchronized boolean saveNote() {
         if (isWorthSaving()) {
-            if (!existInDatabase()) {
-                if ((mNoteId = Note.getNewNoteId(mContext, mFolderId)) == 0) {
+
+                if ((!existInDatabase())&&(mNoteId = Note.getNewNoteId(mContext, mFolderId)) == 0) {
                     Log.e(TAG, "Create new note fail with id:" + mNoteId);
                     return false;
                 }
-            }
+
 
             mNote.syncNote(mContext, mNoteId);
 
