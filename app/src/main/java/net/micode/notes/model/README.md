@@ -1,3 +1,5 @@
+model中含有Note.java和WorkingNote.java两部分
+
 Note.java实现了一个用于管理笔记应用中的笔记和相关数据的类 `Note`，并通过 Android 的 `ContentProvider` 机制进行数据存储和同步。
 这个类的主要作用是管理笔记的创建、修改以及同步到数据库的操作。通过 `ContentValues` 构建笔记数据，并使用 `ContentResolver` 和 `ContentProvider` 将数据存储和更新到数据库中。
 下面是对代码的详细分析：

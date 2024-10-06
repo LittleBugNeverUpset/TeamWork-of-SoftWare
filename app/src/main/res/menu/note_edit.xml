@@ -30,6 +30,9 @@
         android:id="@+id/menu_font_size"
         android:title="@string/menu_font_size"/>
     <item
+        android:id="@+id/menu_font_style"
+        android:title="@string/menu_change_font"/>
+    <item
         android:id="@+id/menu_font_color"
         android:title="@string/menu_font_color"/>
     <item
@@ -59,6 +62,7 @@
     <item
         android:id="@+id/out_password"
         android:title="@string/out_password"/>
+
 
 
 </menu>
