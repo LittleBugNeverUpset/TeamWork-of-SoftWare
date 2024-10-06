@@ -34,7 +34,7 @@ import net.micode.notes.data.Notes.NoteColumns;
  */
 public class FoldersListAdapter extends CursorAdapter {
     // 查询的字段数组
-    public static final String[] PROJECTION = {
+    private static final String[] PROJECTION = {
             NoteColumns.ID,
             NoteColumns.SNIPPET
     };
@@ -42,7 +42,9 @@ public class FoldersListAdapter extends CursorAdapter {
     // 列索引
     public static final int ID_COLUMN = 0;
     public static final int NAME_COLUMN = 1;
-
+    public static String[] getProjection() {
+        return PROJECTION.clone(); // 返回副本以保护数组不被外部修改
+    }
     /**
      * 构造函数，初始化适配器。
      *
@@ -51,7 +53,7 @@ public class FoldersListAdapter extends CursorAdapter {
      */
     public FoldersListAdapter(Context context, Cursor c) {
         super(context, c);
-        // TODO Auto-generated constructor stub
+
     }
 
     /**
@@ -76,11 +78,11 @@ public class FoldersListAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        if (view instanceof FolderListItem) {
-            // 获取文件夹名称，判断是否为根文件夹
-            String folderName = (cursor.getLong(ID_COLUMN) == Notes.ID_ROOT_FOLDER) ? context
-                    .getString(R.string.menu_move_parent_folder) : cursor.getString(NAME_COLUMN);
-            ((FolderListItem) view).bind(folderName);
+        if (view instanceof FolderListItem item) { // 使用模式匹配
+            String folderName = (cursor.getLong(ID_COLUMN) == Notes.ID_ROOT_FOLDER)
+                    ? context.getString(R.string.menu_move_parent_folder)
+                    : cursor.getString(NAME_COLUMN);
+            item.bind(folderName); // 绑定数据
         }
     }
 
