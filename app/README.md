@@ -151,3 +151,55 @@ data文件夹目录结构如下：
 
 ```
 [data包源码分析](./src/main/java/net/micode/notes/data/README.md)
+
+### gtask文件夹
+
+``` bash
+gtask文件夹目录结构如下：
+.
+├── data
+│   ├── MetaData.java
+│   ├── Node.java
+│   ├── SqlData.java
+│   ├── SqlNote.java
+│   ├── Task.java
+│   └── TaskList.java
+├── exception
+│   ├── ActionFailureException.java
+│   └── NetworkFailureException.java
+└── remote
+    ├── GTaskASyncTask.java
+    ├── GTaskClient.java
+    ├── GTaskManager.java
+    └── GTaskSyncService.java
+
+3 directories, 12 files
+```
+[`gtask/data/`源码分析报告](./src/main/java/net/micode/notes/gtask/data/README.md)
+[`gtask/exception/`源码分析报告](./src/main/java/net/micode/notes/gtask/exception/README.md)
+
+
+### Ui文件夹
+``` bash
+Ui文件夹目录如下：
+.
+├── AlarmAlertActivity.java
+├── AlarmInitReceiver.java
+├── AlarmReceiver.java
+├── DateTimePickerDialog.java
+├── DateTimePicker.java
+├── DropdownMenu.java
+├── EditDialog.java
+├── FoldersListAdapter.java
+├── NoteEditActivity.java
+├── NoteEditText.java
+├── NoteItemData.java
+├── NotesListActivity.java
+├── NotesListAdapter.java
+├── NotesListItem.java
+└── NotesPreferenceActivity.java
+
+0 directories, 15 files
+
+```
+[ui包源码分析](./src/main/java/net/micode/notes/ui/README.md)

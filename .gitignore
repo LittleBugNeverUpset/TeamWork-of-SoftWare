@@ -14,6 +14,9 @@ settings.gradle.kts
 .idea/
 ./app/src/androidTest/
 .app/src/test/
+./app/src/main/AndroidManifest.xml
+./app/src/main/main.iml
+./app/src/test/
 
 httpcomponents-client-4.5.14-bin/
 /local.properties
