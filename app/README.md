@@ -179,6 +179,18 @@ gtask文件夹目录结构如下：
 [`gtask/exception/`源码分析报告](./src/main/java/net/micode/notes/gtask/exception/README.md)
 
 
+### tool文件夹
+``` bash
+.
+├── BackupUtils.java
+├── DataUtils.java
+├── GTaskStringUtils.java
+└── ResourceParser.java
+
+0 directories, 4 files
+```
+[tool包源码分析](./src/main/java/net/micode/notes/tool/README.md)
+
 ### Ui文件夹
 ``` bash
 Ui文件夹目录如下：
@@ -203,3 +215,6 @@ Ui文件夹目录如下：
 
 ```
 [ui包源码分析](./src/main/java/net/micode/notes/ui/README.md)
+
+
+
