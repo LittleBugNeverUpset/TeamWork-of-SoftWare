@@ -123,15 +123,10 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
             mPlayer.prepare(); // 准备音频资源
             mPlayer.setLooping(true); // 设置音频循环播放
             mPlayer.start(); // 开始播放
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IllegalArgumentException e | SecurityException e|IllegalStateException e | IOException e){
             e.printStackTrace();
         }
+
     }
 
     /**
