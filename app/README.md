@@ -151,3 +151,16 @@ data文件夹目录结构如下：
 
 ```
 [data包源码分析](./src/main/java/net/micode/notes/data/README.md)
+
+
+### tool文件夹
+``` bash
+.
+├── BackupUtils.java
+├── DataUtils.java
+├── GTaskStringUtils.java
+└── ResourceParser.java
+
+0 directories, 4 files
+```
+[tool包源码分析](./src/main/java/net/micode/notes/tool/README.md)
