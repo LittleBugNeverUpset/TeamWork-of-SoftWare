@@ -283,7 +283,7 @@ public class NotesProvider extends ContentProvider {
             sql.append(" WHERE ");
         }
         if (id > 0) {
-            sql.append(NoteColumns.ID + "=" + String.valueOf(id));
+            sql.append(NoteColumns.ID + "=" +id);
         }
         if (!TextUtils.isEmpty(selection)) {
             String selectString = id > 0 ? parseSelection(selection) : selection;

@@ -1,0 +1,7 @@
+<!-- res/drawable/color_selector_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 背景圆角矩形 -->
+    <solid android:color="#FFFFFF" />
+    <corners android:radius="8dp" />
+    <stroke android:width="2dp" android:color="#DDDDDD" />
+</shape>

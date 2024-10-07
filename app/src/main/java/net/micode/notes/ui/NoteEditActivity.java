@@ -30,6 +30,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -51,7 +52,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.graphics.Color;
+import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.app.AlertDialog;
+import android.view.MenuItem;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.text.TextWatcher;
 import net.micode.notes.R;
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.TextNote;
@@ -65,6 +73,8 @@ import net.micode.notes.ui.NoteEditText.OnTextViewChangeListener;
 import net.micode.notes.widget.NoteWidgetProvider_2x;
 import net.micode.notes.widget.NoteWidgetProvider_4x;
 
+import java.io.FileNotFoundException;
+import java.nio.channels.Selector;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -121,6 +131,26 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         sFontSelectorSelectionMap.put(ResourceParser.TEXT_SUPER, R.id.iv_super_select);
     }
 
+
+    //更改字体
+    private static final Map<Integer, Integer> sFontStyleBtnsMap = new HashMap<Integer, Integer>();
+    static {
+        sFontStyleBtnsMap.put(R.id.ll_font_black, ResourceParser.TEXT_BLACK);
+        sFontStyleBtnsMap.put(R.id.ll_font_light, ResourceParser.TEXT_LIGHT);
+        sFontStyleBtnsMap.put(R.id.ll_font_monospace, ResourceParser.TEXT_MONOSPACE);
+        sFontStyleBtnsMap.put(R.id.ll_font_cursive, ResourceParser.TEXT_CURSIVE);
+    }
+
+    private static final Map<Integer, Integer> sFontStyleSelectorSelectionMap = new HashMap<Integer, Integer>();
+    static {
+        sFontStyleSelectorSelectionMap.put(ResourceParser.TEXT_BLACK, R.id.iv_black_select);
+        sFontStyleSelectorSelectionMap.put(ResourceParser.TEXT_LIGHT, R.id.iv_light_select);
+        sFontStyleSelectorSelectionMap.put(ResourceParser.TEXT_MONOSPACE, R.id.iv_monospace_select);
+        sFontStyleSelectorSelectionMap.put(ResourceParser.TEXT_CURSIVE, R.id.iv_cursive_select);
+    }
+
+
+
     private static final String TAG = "NoteEditActivity";
 
     private HeadViewHolder mNoteHeaderHolder;
@@ -131,6 +161,10 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View mFontSizeSelector;
 
+    private View mFontStyleSelector;
+
+    private  TextView  mNoteTextView;
+
     private EditText mNoteEditor;
 
     private View mNoteEditorPanel;
@@ -138,9 +172,13 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private WorkingNote mWorkingNote;
 
     private SharedPreferences mSharedPrefs;
-    private int mFontSizeId;
 
+    private SharedPreferences mSharedPrefs1;
+    private int mFontSizeId;
+    //更改字体id
+    private int mFontStyleId;
     private static final String PREFERENCE_FONT_SIZE = "pref_font_size";
+    private static final String PREFERENCE_FONT_STYLE = "pref_font_style";
 
     private static final int SHORTCUT_ICON_TITLE_MAX_LEN = 10;
 
@@ -151,7 +189,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private String mUserQuery;
     private Pattern mPattern;
-
+    private TextView mWordCountTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +200,32 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             return;
         }
         initResources();
+
+        // 根据id获取编辑框
+        //mNoteEditor = (EditText) findViewById(R.id.et_note_editor);
+        // 根据id获取字数统计TextView
+        mWordCountTextView = (TextView) findViewById(R.id.tv_word_count);
+
+        // 添加文本改变监听器
+        mNoteEditor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // 获取当前文本的字数
+                int wordCount = charSequence.toString().trim().split("\\s+").length;
+                // 更新字数统计TextView
+                mWordCountTextView.setText(String.valueOf(wordCount));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
+
 
     /**
      * Current activity may be killed when the memory is low. Once it is killed, for another time
@@ -349,6 +412,13 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             mFontSizeSelector.setVisibility(View.GONE);
             return true;
         }
+
+        //更改字体
+        if (mFontStyleSelector.getVisibility() == View.VISIBLE
+                && !inRangeOfView(mFontStyleSelector, ev)) {
+            mFontStyleSelector.setVisibility(View.GONE);
+            return true;
+        }
         return super.dispatchTouchEvent(ev);
     }
 
@@ -387,8 +457,19 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             View view = findViewById(id);
             view.setOnClickListener(this);
         };
+
+        mFontStyleSelector = findViewById(R.id.font_style_selector);
+        for (int id : sFontStyleBtnsMap.keySet()) {
+            View view = findViewById(id);
+            view.setOnClickListener(this);
+        };
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mFontSizeId = mSharedPrefs.getInt(PREFERENCE_FONT_SIZE, ResourceParser.BG_DEFAULT_FONT_SIZE);
+
+
+        mSharedPrefs1 = PreferenceManager.getDefaultSharedPreferences(this);
+        mFontStyleId = mSharedPrefs1.getInt(PREFERENCE_FONT_STYLE, ResourceParser.BG_DEFAULT_FONT_STYLE);
+
         /**
          * HACKME: Fix bug of store the resource id in shared preference.
          * The id may larger than the length of resources, in this case,
@@ -396,6 +477,9 @@ public class NoteEditActivity extends Activity implements OnClickListener,
          */
         if(mFontSizeId >= TextAppearanceResources.getResourcesSize()) {
             mFontSizeId = ResourceParser.BG_DEFAULT_FONT_SIZE;
+        }
+        if(mFontStyleId >= TextAppearanceResources.getResourcesSize()) {
+            mFontStyleId = ResourceParser.BG_DEFAULT_FONT_STYLE;
         }
         mEditTextList = (LinearLayout) findViewById(R.id.note_edit_list);
     }
@@ -452,6 +536,19 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                         TextAppearanceResources.getTexAppearanceResource(mFontSizeId));
             }
             mFontSizeSelector.setVisibility(View.GONE);
+        }else if (sFontStyleBtnsMap.containsKey(id)) {
+            findViewById(sFontStyleSelectorSelectionMap.get(mFontStyleId)).setVisibility(View.GONE);
+            mFontStyleId = sFontStyleBtnsMap.get(id);
+            mSharedPrefs1.edit().putInt(PREFERENCE_FONT_STYLE, mFontStyleId).commit();
+            findViewById(sFontStyleSelectorSelectionMap.get(mFontStyleId)).setVisibility(View.VISIBLE);
+            if (mWorkingNote.getCheckListMode() == TextNote.MODE_CHECK_LIST) {
+                getWorkingText();
+                switchToListMode(mWorkingNote.getContent());
+            } else {
+                mNoteEditor.setTextAppearance(this,
+                        TextAppearanceResources.getTexAppearanceResource(mFontStyleId));
+            }
+            mFontStyleSelector.setVisibility(View.GONE);
         }
     }
 
@@ -471,6 +568,9 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             return true;
         } else if (mFontSizeSelector.getVisibility() == View.VISIBLE) {
             mFontSizeSelector.setVisibility(View.GONE);
+            return true;
+        }else if (mFontStyleSelector.getVisibility() == View.VISIBLE) {
+            mFontStyleSelector.setVisibility(View.GONE);
             return true;
         }
         return false;
@@ -508,6 +608,41 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         return true;
     }
 
+
+//    更改颜色
+
+    private void showColorPickerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("选择字体颜色");
+
+        final String[] colors = {"红色", "绿色", "蓝色", "黑色", "黄色"};
+        final int[] colorValues = {Color.RED, Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW};
+
+        builder.setItems(colors, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int selectedColor = colorValues[which];
+                applyTextColor(selectedColor);
+            }
+        });
+        builder.show();
+    }
+
+    private void applyTextColor(int color) {
+        if (mNoteTextView != null) {
+            mNoteTextView.setTextColor(color);
+        }
+        saveTextColor(color);
+    }
+
+    private void saveTextColor(int color) {
+        SharedPreferences sharedPreferences = getSharedPreferences("NotePreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("textColor", color);
+        editor.apply();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -533,6 +668,11 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 mFontSizeSelector.setVisibility(View.VISIBLE);
                 findViewById(sFontSelectorSelectionMap.get(mFontSizeId)).setVisibility(View.VISIBLE);
                 break;
+            case R.id.menu_font_style:
+                mFontStyleSelector.setVisibility(View.VISIBLE);
+                findViewById(sFontStyleSelectorSelectionMap.get(mFontStyleId)).setVisibility(View.VISIBLE);
+                break;
+
             case R.id.menu_list_mode:
                 mWorkingNote.setCheckListMode(mWorkingNote.getCheckListMode() == 0 ?
                         TextNote.MODE_CHECK_LIST : 0);
@@ -550,6 +690,11 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             case R.id.menu_delete_remind:
                 mWorkingNote.setAlertDate(0, false);
                 break;
+            case R.id.menu_font_color:
+                showColorPickerDialog();;
+                break;
+
+
 
             case R.id.join_password: {
                 // 获取SharedPreferences对象
@@ -660,6 +805,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 }
                 break;
             }
+
+
 
 
 

@@ -9,10 +9,16 @@ gradlew.bat
 local.properties
 gradle-wrapper.properties
 *.toml
-setting.gradle.kts
+settings.gradle.kts
 .gradle/
 .idea/
+./app/src/androidTest/
+.app/src/test/
+./app/src/main/AndroidManifest.xml
+./app/src/main/main.iml
+./app/src/test/
 
+httpcomponents-client-4.5.14-bin/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -26,3 +32,5 @@ setting.gradle.kts
 .externalNativeBuild
 .cxx
 local.properties
+app/build/
+

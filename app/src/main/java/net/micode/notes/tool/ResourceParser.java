@@ -39,6 +39,15 @@ public class ResourceParser {
 
     public static final int BG_DEFAULT_FONT_SIZE = TEXT_MEDIUM;
 
+
+    //更改字体
+    public static final int TEXT_BLACK       = 0;
+    public static final int TEXT_LIGHT       = 1;
+    public static final int TEXT_MONOSPACE   = 2;
+    public static final int TEXT_CURSIVE     = 3;
+
+    public static final int BG_DEFAULT_FONT_STYLE =TEXT_BLACK;
+
     public static class NoteBgResources {
         private final static int [] BG_EDIT_RESOURCES = new int [] {
             R.drawable.edit_yellow,
@@ -159,7 +168,11 @@ public class ResourceParser {
             R.style.TextAppearanceNormal,
             R.style.TextAppearanceMedium,
             R.style.TextAppearanceLarge,
-            R.style.TextAppearanceSuper
+            R.style.TextAppearanceSuper,
+                R.style.TextAppearanceBlack,
+                R.style.TextAppearanceLight,
+                R.style.TextAppearanceMonospace,
+                R.style.TextAppearanceCursive,
         };
 
         public static int getTexAppearanceResource(int id) {

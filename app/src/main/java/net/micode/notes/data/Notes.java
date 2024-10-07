@@ -53,8 +53,12 @@ public class Notes {
     public static final int TYPE_WIDGET_2X = 0;         // 2x小部件类型
     public static final int TYPE_WIDGET_4X = 1;         // 4x小部件类型
 
+    //定义常量替换 "content://"
+    private  static final String uriHead = "content://";
+
     // 内部类，用于定义笔记数据类型常量
     public static class DataConstants {
+        private DataConstants(){}
         public static final String NOTE = TextNote.CONTENT_ITEM_TYPE;     // 文本笔记内容类型
         public static final String CALL_NOTE = CallNote.CONTENT_ITEM_TYPE; // 通话笔记内容类型
     }
@@ -62,120 +66,59 @@ public class Notes {
     /**
      * 查询所有笔记和文件夹的URI
      */
-    public static final Uri CONTENT_NOTE_URI = Uri.parse("content://" + AUTHORITY + "/note");
+    public static final Uri CONTENT_NOTE_URI = Uri.parse(uriHead  + AUTHORITY + "/note");
 
     /**
      * 查询数据的URI
      */
-    public static final Uri CONTENT_DATA_URI = Uri.parse("content://" + AUTHORITY + "/data");
+    public static final Uri CONTENT_DATA_URI = Uri.parse(uriHead  + AUTHORITY + "/data");
 
     // NoteColumns接口定义了与笔记相关的数据库表字段
     public interface NoteColumns {
-        /**
-         * 行的唯一ID
-         * <P> 类型: INTEGER (long) </P>
-         */
+        default String getID(){
+            return ID;
+        }
+
         public static final String ID = "_id";
 
-        /**
-         * 笔记或文件夹的父ID
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String PARENT_ID = "parent_id";
 
-        /**
-         * 笔记或文件夹的创建日期
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String CREATED_DATE = "created_date";
 
-        /**
-         * 最近修改日期
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String MODIFIED_DATE = "modified_date";
 
-        /**
-         * 警报日期
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String ALERTED_DATE = "alert_date";
 
-        /**
-         * 文件夹的名称或笔记的文本内容
-         * <P> 类型: TEXT </P>
-         */
         public static final String SNIPPET = "snippet";
 
-        /**
-         * 笔记的小部件ID
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String WIDGET_ID = "widget_id";
 
-        /**
-         * 小部件类型
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String WIDGET_TYPE = "widget_type";
 
-        /**
-         * 笔记的背景颜色ID
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String BG_COLOR_ID = "bg_color_id";
 
-        /**
-         * 附件标识，如果是文本笔记则没有附件，多媒体笔记至少有一个附件
-         * <P> 类型: INTEGER </P>
-         */
         public static final String HAS_ATTACHMENT = "has_attachment";
 
-        /**
-         * 文件夹中的笔记数量
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String NOTES_COUNT = "notes_count";
 
-        /**
-         * 文件类型：文件夹或笔记
-         * <P> 类型: INTEGER </P>
-         */
         public static final String TYPE = "type";
 
-        /**
-         * 最后的同步ID
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String SYNC_ID = "sync_id";
 
-        /**
-         * 标志是否本地修改
-         * <P> 类型: INTEGER </P>
-         */
         public static final String LOCAL_MODIFIED = "local_modified";
 
-        /**
-         * 移动到临时文件夹之前的原始父ID
-         * <P> 类型: INTEGER </P>
-         */
         public static final String ORIGIN_PARENT_ID = "origin_parent_id";
 
-        /**
-         * GTask ID
-         * <P> 类型: TEXT </P>
-         */
         public static final String GTASK_ID = "gtask_id";
 
-        /**
-         * 版本号
-         * <P> 类型: INTEGER (long) </P>
-         */
         public static final String VERSION = "version";
     }
 
     // DataColumns接口定义了与数据相关的数据库表字段
     public interface DataColumns {
+        default String getID(){
+            return ID;
+        }
         /**
          * 行的唯一ID
          * <P> 类型: INTEGER (long) </P>
@@ -245,6 +188,7 @@ public class Notes {
 
     // TextNote类实现了DataColumns接口，表示文本笔记的数据结构
     public static final class TextNote implements DataColumns {
+        private TextNote(){}
         /**
          * 模式标识，标记文本笔记是否为检查列表模式
          * <P> 类型: Integer 1:检查列表模式 0:普通模式 </P>
@@ -261,11 +205,12 @@ public class Notes {
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/text_note";
 
         // 文本笔记的查询URI
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/text_note");
+        public static final Uri CONTENT_URI = Uri.parse(uriHead  + AUTHORITY + "/text_note");
     }
 
     // CallNote类实现了DataColumns接口，表示通话笔记的数据结构
     public static final class CallNote implements DataColumns {
+        private CallNote(){}
         /**
          * 通话记录的日期
          * <P> 类型: INTEGER (long) </P>
@@ -285,6 +230,6 @@ public class Notes {
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/call_note";
 
         // 通话笔记的查询URI
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/call_note");
+        public static final Uri CONTENT_URI = Uri.parse(uriHead  + AUTHORITY + "/call_note");
     }
 }

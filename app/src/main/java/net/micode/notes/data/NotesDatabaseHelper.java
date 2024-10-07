@@ -1,6 +1,6 @@
 package net.micode.notes.data;
 
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -23,6 +23,13 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
 
     // 定义表名的接口
     public interface TABLE {
+
+        default String getNote(){
+            return NOTE;
+        }
+        default  String getData(){
+            return DATA;
+        }
         // 笔记表名称
         public static final String NOTE = "note";
         // 数据表名称
@@ -34,7 +41,6 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
 
     // 数据库帮助类的单例实例
     private static NotesDatabaseHelper mInstance;
-
     // SQL语句：创建笔记表
     private static final String CREATE_NOTE_TABLE_SQL =
             "CREATE TABLE " + TABLE.NOTE + "(" +
