@@ -5,7 +5,6 @@
 
 但这其中有很多问题是因时代原因和重复的。所以需要人工复审一下。复审就很容易知道，其中一大半都是命名规范，或是因时代导致当时的函数如今被废弃了。
 
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problem01.png)
 
 在SonarQube中，代码缺陷分为以下五个级别：
 - **Blocker**: 极有可能影响应用程序表现的错误;
@@ -131,11 +130,10 @@ try {
 
 在改进后的代码中，使用多异常捕获减少了重复代码，提高了代码的清晰度和可维护性。此方式适用于逻辑处理相同的不同异常情况，从而实现统一的异常管理。
 
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/AlarmAlertActivity.png)
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/DataColumnsWithJoins的继承关系.png)
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/MIMETYPE变量的出处.png)
+![](../../../../../../README_IMAGE/Ui_Problems/AlarmAlertActivity.png)
 
-其余三个**Minor**均为相同原因。
+
+其余**Minor**均为相同原因。
 
 
 
@@ -354,7 +352,7 @@ try {
 ##### 应用到 `DateTimePicker` 中的建议：
 
 在`DateTimePicker`中，根据SonarLint的建议，如果`getCurrentHour()`方法仅在第118行的匿名类上下文内使用，应将其移入该匿名类中。这样一来，方法的使用范围和实现细节都集中在一起，减少了不同上下文之间的依赖，提高了代码的集中度和可读性。
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/DateTimePicker.png)
+![](../../../../../../README_IMAGE/Ui_problems/DateTimePicker.png)
 ## DateTimePickerDialog.java 源码分析
 
 ### 类结构
@@ -448,7 +446,7 @@ public void onDateTimeSet(AlertDialog dialog, long date) {
 ```
 
 在改进后的代码中，方法名`onDateTimeSet`符合驼峰命名法的要求，以小写字母开头，增强了代码的可读性和维护性。此调整有助于确保与Java生态系统其他代码的一致性，并遵循社区广泛认同的最佳实践。
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/DateTimePickerDialog.png)
+![](../../../../../../README_IMAGE/Ui_problems/DateTimePickerDialog.png)
 
 
 ## DropdownMenu.java 源码分析
@@ -594,7 +592,7 @@ public void onDateTimeSet(AlertDialog dialog, long date) {
 - **接口定义**:
   - 定义`onYesOnclickListener`和`onNoOnclickListener`接口，使得对话框对外暴露可扩展的监听机制，允许调用者处理按钮的特定点击事件。
   ###  **使用SonarLint进行代码质量检测**:
-  ![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/EditDialog错误分析.png)
+  ![](../../../../../../README_IMAGE/Ui_problems/EditDialog错误分析.png)
   #### 问题：**Remove this unused "noStr" private field.**
 
 该问题提示私有字段 `noStr` 在类中声明了但未被使用，这使得它成为了死代码。死代码会增大代码库的体积，使得代码的维护和理解更为复杂，并可能会引入错误。因此，需要清理这些未使用的代码。
@@ -623,7 +621,7 @@ if (noStr != null) {
     no.setText(noStr); // 假如需要设置取消按钮的文本
 }
 ```
- ![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/EditDialog错误1.png)
+ ![](../../../../../../README_IMAGE/Ui_problems/EditDialog错误1.png)
 在决策过程中，评估未使用字段是否确实未涉及到实际的功能需求，通过代码审查和业务确认，确保没有遗漏逻辑。最终的清理步骤应该使代码更加紧凑，并且更易于维护。
 #### 问题：**Declaring multiple variables on one line is difficult to read.**
 
@@ -647,7 +645,7 @@ private Button yes, no; // 同一行声明多个变量
 private Button yes; // 每个变量独立声明
 private Button no;
 ```
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/EditDialog错误2.png)
+![](../../../../../../README_IMAGE/Ui_problems/EditDialog错误2.png)
 在符合要求的改进示例中，每个变量都声明在单独的一行上，这样使得代码更加清晰，便于理解。同时，这种风格的一致性也提升了代码的一致性，这在团队开发和大规模代码库中尤为重要。
 剩下的都是一些命名规范的问题，改完后就没有问题了。
 ## FoldersListAdapter.java 源码分析
@@ -724,7 +722,7 @@ private Button no;
   - 使用`PROJECTION`数组定义从数据库中查询的字段。
   - 通过`ID_COLUMN`和`NAME_COLUMN`常量，轻松访问游标中的特定列数据，这种做法使代码对数据库结构的变更更加灵活。
   ### 使用SonarLint进行代码质量检测
-  ![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/FoldersListAdapter错误分析.png)
+  ![](../../../../../../README_IMAGE/Ui_problems/FoldersListAdapter错误分析.png)
   #### 问题：**Make this member "protected".**
 
 此问题针对`public`静态成员变量，特别是可变对象（如数组、集合等），建议将其可见性降低，例如改为`protected`，以避免外部类直接访问并修改其内容，导致不可预知的问题。
@@ -765,7 +763,7 @@ public class A {
   }
 }
 ```
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/FoldersListAdapter错误1.png)
+![](../../../../../../README_IMAGE/Ui_problems/FoldersListAdapter错误1.png)
 在改进后的代码里，通过降低可见性和使用`final`修饰防止数组重新分配，增强了代码的安全性和可维护性。通过返回不可变列表的视图，外部代码无法修改集合内容。
 #### 问题：**Replace this instanceof check and cast with 'instanceof FolderListItem folderlistitem'**
 
@@ -798,7 +796,7 @@ if (view instanceof FolderListItem folderListItem) { // 符合模式
     // 直接使用 folderListItem
 }
 ```
-![](../../../../../../README_IMAGE/data_Problems/Contact_Problems/FoldersListAdapter错误2.png)
+![](../../../../../../README_IMAGE/Ui_problems/FoldersListAdapter错误2.png)
 在改进后的代码中，使用Java 16的模式匹配特性，直接在`instanceof`语句中进行类型转换和赋值。这降低了样板代码的复杂性，提高了可读性，并减少了出错的可能性。此模式在需要保证类型安全及进行类型相关操作时非常有用。
 
 因此，使用这种语法可以帮助开发人员编写更为简洁与高效的代码，符合现代Java编程风格。
