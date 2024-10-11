@@ -57,6 +57,14 @@
     <string name="menu_font_normal">Medium</string>
     <string name="menu_font_large">Large</string>
     <string name="menu_font_super">Super</string>
+
+    <!-- 更改字体 -->
+    <string name="menu_change_font">Change font</string>
+    <string name="menu_font_black">Black</string>
+    <string name="menu_font_light">Light</string>
+    <string name="menu_font_cursive">Cursive</string>
+    <string name="menu_font_monospace">Monospace</string>
+
     <string name="menu_font_color">FrontColor</string>
     <string name="menu_list_mode">Enter check list</string>
     <string name="menu_normal_mode">Leave check list</string>
@@ -136,6 +144,8 @@
     <string name="color_yellow">Yellow</string>
     <string name="color_Red">Red</string>
     <string name="color_Black">Black</string>
+    <string name="highlight" />
+    <string name="remove_highlight" />
     <string name="set_password" translatable="false">设置便签锁密码</string>
     <string name="menu_secret" translatable="false">隐私空间</string>
     <plurals name="search_results_title">

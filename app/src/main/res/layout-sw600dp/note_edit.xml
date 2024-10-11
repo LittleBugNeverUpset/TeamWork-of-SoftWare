@@ -391,6 +391,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/menu_font_super"
                     android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+
+
             </LinearLayout>
 
             <ImageView

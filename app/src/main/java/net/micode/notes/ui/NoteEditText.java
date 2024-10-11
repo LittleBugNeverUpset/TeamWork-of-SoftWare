@@ -17,11 +17,15 @@
 package net.micode.notes.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
+
 import android.text.Layout;
 import android.text.Selection;
+import android.text.Spannable;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -115,6 +119,7 @@ public class NoteEditText extends EditText {
                 Selection.setSelection(getText(), off); // 设置选择
                 break;
         }
+
 
         return super.onTouchEvent(event);
     }

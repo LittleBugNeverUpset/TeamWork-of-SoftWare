@@ -48,5 +48,4 @@
         android:id="@+id/menu_secret"
         android:title="@string/menu_secret" />
 
-
 </menu>

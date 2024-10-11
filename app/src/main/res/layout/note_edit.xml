@@ -85,8 +85,8 @@
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal">
                     <net.micode.notes.ui.NoteEditText
                         android:id="@+id/note_edit_view"
                         android:layout_width="fill_parent"
@@ -118,10 +118,18 @@
 
     <ImageView
         android:id="@+id/btn_set_bg_color"
+        android:layout_width="49dp"
         android:layout_height="43dip"
+        android:layout_gravity="top|right"
+        android:background="@drawable/bg_color_btn_mask" />
+    <TextView
+        android:id="@+id/text_num"
         android:layout_width="wrap_content"
-        android:background="@drawable/bg_color_btn_mask"
-        android:layout_gravity="top|right" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="8dip"
+        />
+
 
     <LinearLayout
         android:id="@+id/note_bg_color_selector"
@@ -397,4 +405,217 @@
                 android:src="@drawable/selected" />
         </FrameLayout>
     </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/font_style_selector"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/font_size_selector_bg"
+        android:layout_gravity="bottom"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/ll_font_black"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_font_black"
+
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_black_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:focusable="false"
+                android:visibility="gone"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/ll_font_light"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_font_light"
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_light_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:focusable="false"
+                android:visibility="gone"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/ll_font_cursive"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_font_monospace"
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_cursive_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:focusable="false"
+                android:visibility="gone"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/ll_font_monospace"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_font_cursive"
+                    android:textAppearance="@style/TextAppearanceUnderMenuIcon" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_monospace_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:focusable="false"
+                android:visibility="gone"
+                android:layout_marginRight="6dip"
+                android:layout_marginBottom="-7dip"
+                android:src="@drawable/selected" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/add_img_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginBottom="7dp"
+        android:src="@android:drawable/ic_menu_gallery" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        tools:context=".NoteEditActivity">
+
+        <TextView
+            android:id="@+id/tv_highlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Highlight"
+            android:onClick="highlightText"
+            android:layout_above="@+id/tv_remove_highlight"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="60dp"
+            android:layout_marginRight="8dp"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_remove_highlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Highlight"
+            android:onClick="removeHighlight"
+            android:layout_above="@id/tv_word_count"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="8dp"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_word_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0"
+            android:textSize="20sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp" />
+
+        <TextView
+            android:id="@+id/tv_word_count_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_word_count"
+            android:layout_toLeftOf="@id/tv_word_count"
+            android:text="字数："
+            android:textSize="20sp"
+            android:layout_marginRight="8dp" />
+    </RelativeLayout>
 </FrameLayout>
