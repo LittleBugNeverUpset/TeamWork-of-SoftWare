@@ -570,6 +570,32 @@
         tools:context=".NoteEditActivity">
 
         <TextView
+            android:id="@+id/tv_highlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Highlight"
+            android:onClick="highlightText"
+            android:layout_above="@+id/tv_remove_highlight"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="60dp"
+            android:layout_marginRight="8dp"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_remove_highlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Highlight"
+            android:onClick="removeHighlight"
+            android:layout_above="@id/tv_word_count"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="8dp"
+            android:textSize="15sp"/>
+
+        <TextView
             android:id="@+id/tv_word_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

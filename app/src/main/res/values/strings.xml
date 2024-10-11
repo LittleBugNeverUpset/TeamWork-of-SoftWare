@@ -144,6 +144,8 @@
     <string name="color_yellow">Yellow</string>
     <string name="color_Red">Red</string>
     <string name="color_Black">Black</string>
+    <string name="highlight" />
+    <string name="remove_highlight" />
     <string name="set_password" translatable="false">设置便签锁密码</string>
     <string name="menu_secret" translatable="false">隐私空间</string>
     <plurals name="search_results_title">

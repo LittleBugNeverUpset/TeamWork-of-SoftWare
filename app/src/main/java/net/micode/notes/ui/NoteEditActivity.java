@@ -189,11 +189,63 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private String mUserQuery;
     private Pattern mPattern;
+<<<<<<< HEAD
     private TextView mWordCountTextView;
+=======
+    private TextView mWordCountTextView;    //用于存储字数统计的TextView
+
+
+    //字体高光
+    public void highlightText(View view) {
+        int startSelection = mNoteEditor.getSelectionStart();
+        int endSelection = mNoteEditor.getSelectionEnd();
+        if (startSelection != -1 && endSelection != -1) {
+            SpannableString spannable = new SpannableString(mNoteEditor.getText());
+            spannable.setSpan(new BackgroundColorSpan(getResources().getColor(R.color.highlight_color)), startSelection, endSelection, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            mNoteEditor.setText(spannable);
+        }
+    }
+    //取消高光
+    public void removeHighlight(View view) {
+        int startSelection = mNoteEditor.getSelectionStart();
+        int endSelection = mNoteEditor.getSelectionEnd();
+        if (startSelection != -1 && endSelection != -1) {
+            SpannableString spannable = new SpannableString(mNoteEditor.getText());
+            BackgroundColorSpan[] spans = spannable.getSpans(startSelection, endSelection, BackgroundColorSpan.class);
+            for (BackgroundColorSpan span : spans) {
+                spannable.removeSpan(span);
+            }
+            mNoteEditor.setText(spannable);
+        }
+    }
+
+
+
+>>>>>>> HaoYang
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.note_edit);
+
+
+
+        TextView tvHighlight = (TextView) findViewById(R.id.tv_highlight);
+        tvHighlight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                highlightText(view);
+            }
+        });
+
+
+        TextView tvRemoveHighlight = (TextView) findViewById(R.id.tv_remove_highlight);
+        tvRemoveHighlight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeHighlight(view);
+            }
+        });
+
 
         if (savedInstanceState == null && !initActivityState(getIntent())) {
             finish();
