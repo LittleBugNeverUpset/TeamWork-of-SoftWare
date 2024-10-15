@@ -33,25 +33,6 @@
         <item name="android:textColorLink">#0000ff</item>
     </style>
 
-
-    <style name="TextAppearanceBlack">
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textColorLink">#0000ff</item>
-    </style>
-    <style name="TextAppearanceLight">
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textColorLink">#0000ff</item>
-    </style>
-    <style name="TextAppearanceMonospace">
-        <item name="android:fontFamily">monospace</item>
-        <item name="android:textColorLink">#0000ff</item>
-    </style>
-    <style name="TextAppearanceCursive">
-        <item name="android:fontFamily">cursive</item>
-        <item name="android:textColorLink">#0000ff</item>
-    </style>
-
-
     <style name="TextAppearancePrimaryItem">
         <item name="android:textSize">@dimen/text_font_size_normal</item>
         <item name="android:textColor">@color/primary_text_dark</item>
@@ -64,11 +45,6 @@
 
     <style name="TextAppearanceUnderMenuIcon">
         <item name="android:textSize">@dimen/text_font_size_normal</item>
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <style name="Font_Black">
-        <item name="android:fontFamily">sans-serif-black </item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 

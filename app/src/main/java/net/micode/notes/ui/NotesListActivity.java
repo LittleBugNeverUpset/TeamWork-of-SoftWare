@@ -81,8 +81,7 @@ import java.util.HashSet;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.Charset;
-
-
+import java.util.Objects;
 
 
 public class NotesListActivity extends Activity implements OnClickListener, OnItemLongClickListener {
@@ -105,7 +104,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private ListEditState mState;
 
     private BackgroundQueryHandler mBackgroundQueryHandler;
-
+    public static int secret_mode = 0;
     private NotesListAdapter mNotesListAdapter;
 
     private ListView mNotesListView;
@@ -276,6 +275,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             return true;
         }
 
+
         private void updateMenu() {
             int selectedCount = mNotesListAdapter.getSelectedCount();
             // Update dropdown menu
@@ -418,10 +418,35 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private void startAsyncNotesListQuery() {
         String selection = (mCurrentFolderId == Notes.ID_ROOT_FOLDER) ? ROOT_FOLDER_SELECTION
                 : NORMAL_SELECTION;
-        mBackgroundQueryHandler.startQuery(FOLDER_NOTE_LIST_QUERY_TOKEN, null,
-                Notes.CONTENT_NOTE_URI, NoteItemData.PROJECTION, selection, new String[] {
-                    String.valueOf(mCurrentFolderId)
-                }, NoteColumns.TYPE + " DESC," + NoteColumns.MODIFIED_DATE + " DESC");
+        if(secret_mode == 0) {
+            mBackgroundQueryHandler.startQuery(FOLDER_NOTE_LIST_QUERY_TOKEN, null,
+                    Notes.CONTENT_NOTE_URI, NoteItemData.PROJECTION, selection, new String[]{
+                            String.valueOf(mCurrentFolderId)
+                    }, NoteColumns.TYPE + " DESC," + NoteColumns.MODIFIED_DATE + " DESC");
+        }
+        else{
+            String str1 = "520";
+            String [] PROJECTION = new String [] {  //定义一个新的PROJECTION数组，只换掉SNIPPET
+                    NoteColumns.ID,
+                    NoteColumns.ALERTED_DATE,
+                    NoteColumns.BG_COLOR_ID,
+                    NoteColumns.CREATED_DATE,
+                    NoteColumns.HAS_ATTACHMENT,
+                    NoteColumns.MODIFIED_DATE,
+                    NoteColumns.NOTES_COUNT,
+                    NoteColumns.PARENT_ID,
+//                    NoteColumns.SNIPPET,
+                    str1,
+                    NoteColumns.TYPE,
+                    NoteColumns.WIDGET_ID,
+                    NoteColumns.WIDGET_TYPE,
+            };
+            mBackgroundQueryHandler.startQuery(FOLDER_NOTE_LIST_QUERY_TOKEN, null,
+                    Notes.CONTENT_NOTE_URI, PROJECTION, selection, new String[]{
+                            String.valueOf(mCurrentFolderId)
+                    }, NoteColumns.TYPE + " DESC," + NoteColumns.MODIFIED_DATE + " DESC");
+
+        }
     }
 
     private final class BackgroundQueryHandler extends AsyncQueryHandler {
@@ -824,7 +849,9 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+
         menu.clear();
+
         if (mState == ListEditState.NOTE_LIST) {
             getMenuInflater().inflate(R.menu.note_list, menu);
             // set sync or sync_cancel
@@ -837,6 +864,10 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         } else {
             Log.e(TAG, "Wrong state:" + mState);
         }
+        if(secret_mode == 1)
+            menu.findItem(R.id.menu_secret).setVisible(false);
+        else
+            menu.findItem(R.id.menu_quit_secret).setVisible(false);
         return true;
     }
 
@@ -876,103 +907,52 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 break;
 
 
-            case R.id.set_password: {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(NotesListActivity.this);
-                dialog.setTitle("重要提醒");
-                dialog.setMessage("您确认设置便签锁密码吗？");
-                dialog.setCancelable(false);
-                dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AlertDialog.Builder passwordDialog = new AlertDialog.Builder(NotesListActivity.this);
-                        passwordDialog.setTitle("输入密码");
-                        final EditText input = new EditText(NotesListActivity.this);
-                        passwordDialog.setView(input);
-                        passwordDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String password = input.getText().toString();
-                                try {
-                                    // 创建 MessageDigest 实例
-                                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                                    // 生成哈希值
-                                    byte[] hash = digest.digest(password.getBytes(Charset.forName("UTF-8")));
-                                    // 将字节转换为十六进制字符串
-                                    StringBuilder hexString = new StringBuilder();
-                                    for (byte b : hash) {
-                                        String hex = Integer.toHexString(0xff & b);
-                                        if (hex.length() == 1) hexString.append('0');
-                                        hexString.append(hex);
-                                    }
-                                    // 保存哈希值
-                                    String hashedPassword = hexString.toString();
-                                    // 使用 SharedPreferences 保存哈希密码
-                                    SharedPreferences prefs = getSharedPreferences("MyApp", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putString("password", hashedPassword);
-                                    editor.apply();
-                                    // 显示 Toast 消息
-                                    Toast.makeText(NotesListActivity.this, "密码保存成功", Toast.LENGTH_SHORT).show();
-                                } catch (NoSuchAlgorithmException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                        passwordDialog.setNegativeButton("取消", null);
-                        passwordDialog.show();
-                    }
-                });
-                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}
-                });
-                dialog.show();
-                startAsyncNotesListQuery();
-                break;
-            }
-
-
-
-
-
-
-
-
-
             case R.id.menu_secret: {    //进入私密模式
-                //TODO
-                /**
-                 *
-                 * 隐私空间密码询问
-                 */
+//                secret_mode = 1;
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(NotesListActivity.this);
+//                dialog.setTitle("重要提醒");
+//                dialog.setMessage("您确认进入私密模式吗？");
+//                dialog.setCancelable(false);
+//                dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                 final EditDialog editDialog = new EditDialog(NotesListActivity.this);
                 editDialog.setTitle("正在进入隐私空间");
                 editDialog.setYesOnclickListener("确定", new EditDialog.onYesOnclickListener() {
                     @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        startAsyncNotesListQuery();
                     public void onYesClick(String phone) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(NotesListActivity.this);
-                        dialog.setTitle("重要提醒");
-                        dialog.setMessage("您确认进入私密模式吗？");
-                        dialog.setCancelable(false);
-                        dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        String userInput = phone;
+                        Toast.makeText(NotesListActivity.this, "输入的内容是: " + userInput, Toast.LENGTH_SHORT).show();
 
-                                startAsyncNotesListQuery();
-//                        //更换背景图
-//                        getWindow().setBackgroundDrawableResource(R.drawable.mi1);
-                                Toast.makeText(NotesListActivity.this, "您已进入私密模式", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        dialog.show();
-                        startAsyncNotesListQuery();
-                        editDialog.dismiss();
-                    }
+                        if(Objects.equals(userInput, "1"))
+                        {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(NotesListActivity.this);
+                            dialog.setTitle("重要提醒");
+                            dialog.setMessage("您确认进入私密模式吗？");
+                            dialog.setCancelable(false);
+                            dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    secret_mode = 1;
+                                    startAsyncNotesListQuery();
+                                    Toast.makeText(NotesListActivity.this, "您已进入私密模式", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                            dialog.show();
+                            startAsyncNotesListQuery();
+                            editDialog.dismiss();
+                        }
+                        else
+                        {
+                            Toast.makeText(NotesListActivity.this, "密码错误，请重新输入", Toast.LENGTH_SHORT).show();
+                        }
+                        }
+
                 });
                 editDialog.setNoOnclickListener("取消", new EditDialog.onNoOnclickListener() {
                     @Override
@@ -980,19 +960,41 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                         editDialog.dismiss();
                     }
                 });
-
                 editDialog.show();
 
 //                Toast.makeText(this,"您已进入私密模式",Toast.LENGTH_SHORT).show();
                 break;
+
             }
-
-
-            default:
-                break;
-        }
+    }
         return true;
     }
+//            case R.id.menu_quit_secret:{    //退出私密模式
+//                secret_mode = 0;
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(NotesListActivity.this);
+//                dialog.setTitle("重要提醒");
+//                dialog.setMessage("您确认退出私密模式吗？");
+//                dialog.setCancelable(false);
+//                dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        startAsyncNotesListQuery();
+//                        Toast.makeText(NotesListActivity.this,"您已退出私密模式",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which){}
+//                });
+//                dialog.show();
+//                break;
+//            }
+//
+//            default:
+//                break;
+//        }
+//        return true;
+
 
     @Override
     public boolean onSearchRequested() {

@@ -38,14 +38,11 @@
         android:title="@string/menu_search"/>
 
 
-    <!--设置笔记锁密码:-->
-    <item
-        android:id="@+id/set_password"
-        android:title="@string/set_password" />
-
-
     <item
         android:id="@+id/menu_secret"
         android:title="@string/menu_secret" />
 
+    <item
+        android:id="@+id/menu_quit_secret"
+        android:title="@string/menu_quit_secret"/>
 </menu>

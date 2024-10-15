@@ -26,7 +26,6 @@ import android.util.Log;
 import java.util.HashMap;
 
 public class Contact {
-    private  Contact() {}
     // 静态缓存，用于存储电话号码和联系人名称的映射
     private static HashMap<String, String> sContactCache;
     private static final String TAG = "Contact";

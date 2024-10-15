@@ -116,18 +116,6 @@ public class DateTimePicker extends FrameLayout {
     };
 
     private NumberPicker.OnValueChangeListener mOnMinuteChangedListener = new NumberPicker.OnValueChangeListener() {
-        private int getCurrentHour() {
-            if (mIs24HourView){
-                return getCurrentHourOfDay();
-            } else {
-                int hour = getCurrentHourOfDay();
-                if (hour > HOURS_IN_HALF_DAY) {
-                    return hour - HOURS_IN_HALF_DAY;
-                } else {
-                    return hour == 0 ? HOURS_IN_HALF_DAY : hour;
-                }
-            }
-        }
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             int minValue = mMinuteSpinner.getMinValue();
@@ -360,7 +348,18 @@ public class DateTimePicker extends FrameLayout {
         return mDate.get(Calendar.HOUR_OF_DAY);
     }
 
-
+    private int getCurrentHour() {
+        if (mIs24HourView){
+            return getCurrentHourOfDay();
+        } else {
+            int hour = getCurrentHourOfDay();
+            if (hour > HOURS_IN_HALF_DAY) {
+                return hour - HOURS_IN_HALF_DAY;
+            } else {
+                return hour == 0 ? HOURS_IN_HALF_DAY : hour;
+            }
+        }
+    }
 
     /**
      * Set current hour in 24 hour mode, in the range (0~23)

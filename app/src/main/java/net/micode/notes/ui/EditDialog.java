@@ -13,33 +13,32 @@ import net.micode.notes.R;
  * Created by Administrator on 2018/1/31.
  */
 public class EditDialog extends Dialog {
-    private Button yes;//确定按钮
-    private Button no;
+    private Button yes, no;//确定按钮
     private TextView titleTv;//消息标题文本
-    private EditText etphone;//输入电话
+    private EditText et_phone;//输入电话
     private String titleStr;//从外界设置的title文本
-
+    private String messageStr;//从外界设置的消息文本
     //确定文本和取消文本的显示内容
-    private String yesStr;
+    private String yesStr, noStr;
     private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
-    private OnYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
+    private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
     /**
      * 设置取消按钮的显示内容和监听
      */
     public void setNoOnclickListener(String str, onNoOnclickListener onNoOnclickListener) {
-        if (nostr != null) {
-            no.setText(noStr);
+        if (str != null) {
+            noStr = str;
         }
         this.noOnclickListener = onNoOnclickListener;
     }
     /**
      * 设置确定按钮的显示内容和监听
      */
-    public void setYesOnclickListener(String str, OnYesOnclickListener onYesOnclickListener) {
+    public void setYesOnclickListener(String str, onYesOnclickListener onYesOnclickListener) {
         if (str != null) {
             yesStr = str;
         }
-        this.yesOnclickListener = OnYesOnclickListener;
+        this.yesOnclickListener = onYesOnclickListener;
     }
     public EditDialog(Context context) {
         super(context, R.style.Dialog_Msg);
@@ -66,7 +65,7 @@ public class EditDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if (yesOnclickListener != null) {
-                    yesOnclickListener.onYesClick(etphone.getText().toString());
+                    yesOnclickListener.onYesClick(et_phone.getText().toString());
                 }
             }
         });
@@ -87,7 +86,9 @@ public class EditDialog extends Dialog {
         if (titleStr != null) {
             titleTv.setText(titleStr);
         }
-
+        if (messageStr != null) {
+//            messageTv.setText(messageStr);
+        }
         //如果设置按钮的文字
         if (yesStr != null) {
             yes.setText(yesStr);
@@ -100,7 +101,7 @@ public class EditDialog extends Dialog {
         yes = (Button) findViewById(R.id.yes);
         no = (Button) findViewById(R.id.no);
         titleTv = (TextView) findViewById(R.id.title);
-        etphone = (EditText) findViewById(R.id.etphone);
+        et_phone = (EditText) findViewById(R.id.et_phone);
     }
     /**
      * 从外界Activity为Dialog设置标题
@@ -121,10 +122,10 @@ public class EditDialog extends Dialog {
     /**
      * 设置确定按钮和取消被点击的接口
      */
-    public interface OnYesOnclickListener {
+    public interface onYesOnclickListener {
         public void onYesClick(String phone);
     }
-    public interface OnNoOnclickListener {
+    public interface onNoOnclickListener {
         public void onNoClick();
     }
     @Override

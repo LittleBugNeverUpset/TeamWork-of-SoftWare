@@ -52,7 +52,7 @@ public class DateTimePickerDialog extends AlertDialog implements OnClickListener
      * 日期和时间设置监听器的接口定义。
      */
     public interface OnDateTimeSetListener {
-        void onDateTimeSet(AlertDialog dialog, long date);
+        void OnDateTimeSet(AlertDialog dialog, long date);
     }
 
     /**
